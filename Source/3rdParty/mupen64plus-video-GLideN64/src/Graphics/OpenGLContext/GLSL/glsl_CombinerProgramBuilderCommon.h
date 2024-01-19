@@ -55,6 +55,7 @@ private:
 	void _writeShaderCalcLight(std::stringstream& ssShader) const override;
 	void _writeShaderNoise(std::stringstream& ssShader) const override;
 	void _writeShaderDither(std::stringstream& ssShader) const override;
+	void _writeShaderDeband(std::stringstream& ssShader) const override;
 	void _writeShaderWriteDepth(std::stringstream& ssShader) const override;
 	void _writeShaderN64DepthCompare(std::stringstream& ssShader) const override;
 	void _writeShaderN64DepthRender(std::stringstream& ssShader) const override;
@@ -94,6 +95,7 @@ private:
 
 	ShaderPartPtr m_shaderNoise;
 	ShaderPartPtr m_shaderDither;
+	ShaderPartPtr m_shaderDeband;
 	ShaderPartPtr m_shaderWriteDepth;
 	ShaderPartPtr m_shaderCalcLight;
 	ShaderPartPtr m_shaderN64DepthCompare;

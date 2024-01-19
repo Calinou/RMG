@@ -1106,6 +1106,34 @@ public:
 			"  return texture(uTexNoise,coord).r;					\n"
 			"}														\n"
 			;
+
+
+	}
+};
+
+class ShaderDeband : public ShaderPart
+{
+public:
+	ShaderDeband(const opengl::GLInfo & _glinfo)
+	{
+		m_part =
+		"// From https://alex.vlachos.com/graphics/Alex_Vlachos_Advanced_VR_Rendering_GDC2015.pdf\n"
+		"// and https://www.shadertoy.com/view/MslGR8 (5th one starting from the bottom)\n"
+		"// NOTE: `frag_coord` is in pixels (i.e. not normalized UV).					\n"
+		"vec3 applyDebanding(vec2 frag_coord) {											\n"
+		;
+		if (config.generalEmulation.enableDebanding) {
+			m_part +=
+				"  // Iestyn's RGB dither (7 asm instructions) from Portal 2 X360, slightly modified for VR.\n"
+				"  highp vec3 dither = vec3(dot(vec2(171.0, 231.0), frag_coord));				\n"
+				"  dither.rgb = fract(dither.rgb / vec3(103.0, 71.0, 97.0));					\n"
+				"  // Subtract 0.5 to avoid slightly brightening the whole viewport.			\n"
+				"  return (dither.rgb - 0.5) / 255.0;\n"
+				;
+		} else {
+			m_part += "  return vec3(0.0, 0.0, 0.0);\n";
+		}
+		m_part += "}\n";
 	}
 };
 
@@ -1469,6 +1497,7 @@ CombinerProgramBuilderCommon::CombinerProgramBuilderCommon(const opengl::GLInfo 
 , m_shaderFragmentMainEnd(new ShaderFragmentMainEnd(_glinfo))
 , m_shaderNoise(new ShaderNoise(_glinfo))
 , m_shaderDither(new ShaderDither(_glinfo))
+, m_shaderDeband(new ShaderDeband(_glinfo))
 , m_shaderWriteDepth(new ShaderWriteDepth(_glinfo))
 , m_shaderCalcLight(new ShaderCalcLight(_glinfo))
 , m_shaderN64DepthCompare(new ShaderN64DepthCompare(_glinfo))
@@ -1682,6 +1711,11 @@ void CombinerProgramBuilderCommon::_writeShaderNoise(std::stringstream& ssShader
 void CombinerProgramBuilderCommon::_writeShaderDither(std::stringstream& ssShader)const
 {
 	 m_shaderDither->write(ssShader);
+}
+
+void CombinerProgramBuilderCommon::_writeShaderDeband(std::stringstream& ssShader)const
+{
+	 m_shaderDeband->write(ssShader);
 }
 
 void CombinerProgramBuilderCommon::_writeShaderWriteDepth(std::stringstream& ssShader)const

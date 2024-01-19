@@ -119,6 +119,7 @@ private:
 	virtual void _writeShaderReadtexCopyMode(std::stringstream& ssShader) const = 0;
 	virtual void _writeShaderNoise(std::stringstream& ssShader) const = 0;
 	virtual void _writeShaderDither(std::stringstream& ssShader) const = 0;
+	virtual void _writeShaderDeband(std::stringstream& ssShader) const = 0;
 	virtual void _writeShaderWriteDepth(std::stringstream& ssShader) const = 0;
 	virtual void _writeShaderN64DepthCompare(std::stringstream& ssShader) const = 0;
 	virtual void _writeShaderN64DepthRender(std::stringstream& ssShader) const = 0;

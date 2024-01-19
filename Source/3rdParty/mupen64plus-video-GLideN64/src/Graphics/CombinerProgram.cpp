@@ -13,6 +13,7 @@ namespace graphics {
 		vecOptions.push_back(config.texture.enableHalosRemoval);
 		vecOptions.push_back(config.generalEmulation.enableHWLighting);
 		vecOptions.push_back(config.generalEmulation.enableHiresNoiseDithering);
+		vecOptions.push_back(config.generalEmulation.enableDebanding);
 		vecOptions.push_back(config.generalEmulation.enableDitheringPattern);
 		vecOptions.push_back(config.generalEmulation.enableDitheringQuantization);
 		vecOptions.push_back(config.generalEmulation.enableLOD);

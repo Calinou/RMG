@@ -58,6 +58,7 @@ struct Config
 		u32 enableDitheringPattern;
 		u32 enableDitheringQuantization;
 		u32 enableHiresNoiseDithering;
+		u32 enableDebanding;
 		u32 rdramImageDitheringMode;
 		u32 enableLOD;
 		u32 enableHWLighting;

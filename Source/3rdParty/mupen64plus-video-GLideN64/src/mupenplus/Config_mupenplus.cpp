@@ -147,6 +147,8 @@ bool Config_SetDefault()
 	assert(res == M64ERR_SUCCESS);
 	res = ConfigSetDefaultBool(g_configVideoGliden64, "EnableHiresNoiseDithering", config.generalEmulation.enableHiresNoiseDithering, "Enable hi-res noise dithering.");
 	assert(res == M64ERR_SUCCESS);
+	res = ConfigSetDefaultBool(g_configVideoGliden64, "EnableDebanding", config.generalEmulation.enableDebanding, "Enable debanding to further smooth out gradients.");
+	assert(res == M64ERR_SUCCESS);
 	res = ConfigSetDefaultBool(g_configVideoGliden64, "DitheringQuantization", config.generalEmulation.enableDitheringQuantization, "Dither with color quantization.");
 	assert(res == M64ERR_SUCCESS);
 	res = ConfigSetDefaultInt(g_configVideoGliden64, "RDRAMImageDitheringMode", config.generalEmulation.rdramImageDitheringMode, "Dithering mode for image in RDRAM. (0=disable, 1=bayer, 2=magic square, 3=blue noise)");
@@ -372,6 +374,8 @@ void Config_LoadCustomConfig()
 	if (result == M64ERR_SUCCESS) config.generalEmulation.enableDitheringPattern = atoi(value);
 	result = ConfigExternalGetParameter(fileHandle, sectionName, "generalEmulation\\enableHiresNoiseDithering", value, sizeof(value));
 	if (result == M64ERR_SUCCESS) config.generalEmulation.enableHiresNoiseDithering = atoi(value);
+	result = ConfigExternalGetParameter(fileHandle, sectionName, "generalEmulation\\enableDebanding", value, sizeof(value));
+	if (result == M64ERR_SUCCESS) config.generalEmulation.enableDebanding = atoi(value);
 	result = ConfigExternalGetParameter(fileHandle, sectionName, "generalEmulation\\enableDitheringQuantization", value, sizeof(value));
 	if (result == M64ERR_SUCCESS) config.generalEmulation.enableDitheringQuantization = atoi(value);
 	result = ConfigExternalGetParameter(fileHandle, sectionName, "generalEmulation\\rdramImageDitheringMode", value, sizeof(value));
@@ -510,6 +514,7 @@ void Config_LoadConfig()
 	//#Emulation Settings
 	config.generalEmulation.enableDitheringPattern = ConfigGetParamBool(g_configVideoGliden64, "EnableDitheringPattern");
 	config.generalEmulation.enableHiresNoiseDithering = ConfigGetParamBool(g_configVideoGliden64, "EnableHiresNoiseDithering");
+	config.generalEmulation.enableDebanding = ConfigGetParamBool(g_configVideoGliden64, "EnableDebanding");
 	config.generalEmulation.enableDitheringQuantization = ConfigGetParamBool(g_configVideoGliden64, "DitheringQuantization");
 	config.generalEmulation.rdramImageDitheringMode = ConfigGetParamInt(g_configVideoGliden64, "RDRAMImageDitheringMode");
 

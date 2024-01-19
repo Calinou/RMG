@@ -278,7 +278,8 @@ CombinerInputs CombinerProgramBuilder::compileCombiner(const CombinerKey & _key,
 
 	if (CombinerProgramBuilder::s_cycleType == G_CYC_2CYCLE) {
 
-		ssShader << "  combined_color = vec4(color1, alpha1);" << std::endl;
+		// `applyDebanding()` works quite well when added to `color1` here (it debands textures and fog to an extent), but fog still has bands.
+		ssShader << "  combined_color = vec4(color1, alpha1) + applyDebanding(gl_FragCoord.xy).rgbr;" << std::endl;
 		if (_alpha.numStages == 2) {
 			ssShader << "  alpha2 = ";
 			_correctSecondStageParams(_alpha.stage[1]);
@@ -297,12 +298,13 @@ CombinerInputs CombinerProgramBuilder::compileCombiner(const CombinerKey & _key,
 		else
 			ssShader << "  color2 = color1;" << std::endl;
 
-		ssShader << "  lowp vec4 cmbRes = vec4(color2, alpha2);" << std::endl;
+		// `applyDebanding()` works quite well when added to `color2` here (it debands textures and fog to an extent), but fog still has bands.
+		ssShader << "  lowp vec4 cmbRes = vec4(color2, alpha2) + applyDebanding(gl_FragCoord.xy).rgbr;" << std::endl;
 	}
 	else {
 		if (CombinerProgramBuilder::s_cycleType < G_CYC_FILL)
 			ssShader << "  if (uCvgXAlpha != 0 && alpha1 < 0.125) discard;" << std::endl;
-		ssShader << "  lowp vec4 cmbRes = vec4(color1, alpha1);" << std::endl;
+		ssShader << "  lowp vec4 cmbRes = vec4(color1, alpha1) + applyDebanding(gl_FragCoord.xy).rgbr;" << std::endl;
 	}
 
 	// Simulate N64 color clamp.
@@ -366,6 +368,8 @@ graphics::CombinerProgram * CombinerProgramBuilder::buildCombinerProgram(Combine
 
 	/* Write headers */
 	_writeFragmentHeader(ssShader);
+
+	_writeShaderDeband(ssShader);
 
 	if (bUseTextures) {
 		_writeFragmentGlobalVariablesTex(ssShader);
@@ -450,6 +454,7 @@ graphics::CombinerProgram * CombinerProgramBuilder::buildCombinerProgram(Combine
 	else
 		ssShader << "  input_color = shadeColor.rgb;" << std::endl;
 
+	// Adding `applyDebanding()` here improves gradients on vertex-lit untextured surfaces, but not textured surfaces or fog rendering.
 	ssShader << "  vec_color = vec4(input_color, shadeColor.a);" << std::endl;
 	ssShader << strCombiner << std::endl;
 

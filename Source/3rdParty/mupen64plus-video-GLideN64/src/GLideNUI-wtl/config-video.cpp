@@ -136,6 +136,7 @@ void CVideoTab::ApplyLanguage(void) {
 	SetDlgItemTextW(IDC_CHK_APPLY_TO_OUTPUT, wGS(VIDEO_DITHERING_APPLY_TO_OUTPUT).c_str());
 	SetDlgItemTextW(IDC_CHK_5BIT_QUANTIZATION, wGS(VIDEO_DITHERING_5BIT_QUANTIZATION).c_str());
 	SetDlgItemTextW(IDC_CHK_HIRES_NOISE, wGS(VIDEO_DITHERING_HIRES_NOISE).c_str());
+	SetDlgItemTextW(IDC_CHK_DEBANDING, wGS(VIDEO_DEBANDING).c_str());
 	SetDlgItemTextW(IDC_LANGUAGE, wGS(VIDEO_LANGUAGE).c_str());
 
 	std::wstring tooltip = wGS(VIDEO_FULL_SCREEN_RES_TOOLTIP);
@@ -174,6 +175,8 @@ void CVideoTab::ApplyLanguage(void) {
 	TTSetTxt(GetDlgItem(IDC_CHK_5BIT_QUANTIZATION), tooltip.c_str());
 	tooltip = wGS(VIDEO_DITHERING_HIRES_NOISE_TOOLTIP);
 	TTSetTxt(GetDlgItem(IDC_CHK_HIRES_NOISE), tooltip.c_str());
+	tooltip = wGS(VIDEO_DEBANDING_TOOLTIP);
+	TTSetTxt(GetDlgItem(IDC_CHK_DEBANDING), tooltip.c_str());
 	tooltip = wGS(VIDEO_DITHERING_MODE_TOOLTIP);
 	TTSetTxt(GetDlgItem(IDC_CMB_PATTERN), tooltip.c_str());
 
@@ -289,7 +292,8 @@ void CVideoTab::HideMSAADepthWarning(bool hide)
 	IDC_CMB_PATTERN,
 	IDC_CHK_APPLY_TO_OUTPUT,
 	IDC_CHK_5BIT_QUANTIZATION,
-	IDC_CHK_HIRES_NOISE
+	IDC_CHK_HIRES_NOISE,
+	IDC_CHK_DEBANDING
 	};
 
 	RECT Rect; RECT groupRect;
@@ -484,6 +488,7 @@ void CVideoTab::LoadSettings(bool /*blockCustomSettings*/) {
 	CButton(GetDlgItem(IDC_CHK_APPLY_TO_OUTPUT)).SetCheck(config.generalEmulation.enableDitheringPattern != 0 ? BST_CHECKED : BST_UNCHECKED);
 	CButton(GetDlgItem(IDC_CHK_5BIT_QUANTIZATION)).SetCheck(config.generalEmulation.enableDitheringQuantization != 0 ? BST_CHECKED : BST_UNCHECKED);
 	CButton(GetDlgItem(IDC_CHK_HIRES_NOISE)).SetCheck(config.generalEmulation.enableHiresNoiseDithering != 0 ? BST_CHECKED : BST_UNCHECKED);
+	CButton(GetDlgItem(IDC_CHK_DEBANDING)).SetCheck(config.generalEmulation.enableDebanding != 0 ? BST_CHECKED : BST_UNCHECKED);
 
 	CComboBox translationsComboBox(GetDlgItem(IDC_CMB_LANGUAGE));
 	translationsComboBox.SetCurSel(-1);
@@ -565,6 +570,7 @@ void CVideoTab::SaveSettings()
 	config.generalEmulation.enableDitheringPattern = CButton(GetDlgItem(IDC_CHK_APPLY_TO_OUTPUT)).GetCheck() == BST_CHECKED ? 1 : 0;
 	config.generalEmulation.enableDitheringQuantization = CButton(GetDlgItem(IDC_CHK_5BIT_QUANTIZATION)).GetCheck() == BST_CHECKED ? 1 : 0;
 	config.generalEmulation.enableHiresNoiseDithering = CButton(GetDlgItem(IDC_CHK_HIRES_NOISE)).GetCheck() == BST_CHECKED ? 1 : 0;
+	config.generalEmulation.enableDebanding = CButton(GetDlgItem(IDC_CHK_DEBANDING)).GetCheck() == BST_CHECKED ? 1 : 0;
 
 	CComboBox translationsComboBox(GetDlgItem(IDC_CMB_LANGUAGE));
 	config.translationFile = (const char *)translationsComboBox.GetItemDataPtr(translationsComboBox.GetCurSel());

@@ -253,6 +253,7 @@ void ConfigDialog::_init(bool reInit, bool blockCustomSettings)
 	ui->ditheringModeComboBox->setCurrentIndex(config.generalEmulation.rdramImageDitheringMode);
 	ui->ditheringQuantizationCheckBox->setChecked(config.generalEmulation.enableDitheringQuantization);
 	ui->hiresNoiseDitheringCheckBox->setChecked(config.generalEmulation.enableHiresNoiseDithering);
+	ui->debandingCheckBox->setChecked(config.generalEmulation.enableDebanding);
 	ui->ditheringPatternCheckBox->setChecked(config.generalEmulation.enableDitheringPattern);
 
 	// Emulation settings
@@ -590,6 +591,7 @@ void ConfigDialog::accept(bool justSave) {
 	config.generalEmulation.rdramImageDitheringMode = ui->ditheringModeComboBox->currentIndex();
 	config.generalEmulation.enableDitheringQuantization = ui->ditheringQuantizationCheckBox->isChecked() ? 1 : 0;
 	config.generalEmulation.enableHiresNoiseDithering = ui->hiresNoiseDitheringCheckBox->isChecked() ? 1 : 0;
+	config.generalEmulation.enableDebanding = ui->debandingCheckBox->isChecked() ? 1 : 0;
 	config.generalEmulation.enableDitheringPattern = ui->ditheringPatternCheckBox->isChecked() ? 1 : 0;
 
 	const int lanuageIndex = ui->translationsComboBox->currentIndex();

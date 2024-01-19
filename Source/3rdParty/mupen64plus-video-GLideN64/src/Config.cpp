@@ -43,6 +43,7 @@ void Config::resetToDefaults()
 
 	generalEmulation.enableLOD = 1;
 	generalEmulation.enableHiresNoiseDithering = 0;
+	generalEmulation.enableDebanding = 0;
 	generalEmulation.enableDitheringPattern = 0;
 	generalEmulation.enableDitheringQuantization = 1;
 	generalEmulation.rdramImageDitheringMode = BufferDitheringMode::bdmBlueNoise;
@@ -248,4 +249,3 @@ const char* Config::enabledHotkeyIniName(u32 _idx)
 	}
 	return nullptr;
 }
-
