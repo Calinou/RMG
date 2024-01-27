@@ -885,6 +885,9 @@ void gDPSetKeyGB(u32 cG, u32 sG, u32 wG, u32 cB, u32 sB, u32 wB )
 
 void gDPTextureRectangle(f32 ulx, f32 uly, f32 lrx, f32 lry, s32 tile, s16 s, s16 t, f32 dsdx, f32 dtdy , bool flip)
 {
+	// Disable HUD by moving elements very far away.
+	ulx += 2000; lrx += 2000;
+
 	if (gDP.otherMode.cycleType == G_CYC_COPY) {
 		dsdx /= 4.0f;
 		lrx += 1.0f;
@@ -936,6 +939,8 @@ void gDPTextureRectangle(f32 ulx, f32 uly, f32 lrx, f32 lry, s32 tile, s16 s, s1
 		flip, false, true, frameBufferList().getCurrent());
 	if (config.graphics2D.enableNativeResTexrects == 0 && config.graphics2D.correctTexrectCoords != Config::tcDisable)
 		drawer.correctTexturedRectParams(params);
+
+	//printf("drawTexturedRect: %d\t%d\t%d\t%d\n", ulx, uly, lrx, lry);
 	drawer.drawTexturedRect(params);
 
 	gSP.textureTile[0] = textureTileOrg[0];
